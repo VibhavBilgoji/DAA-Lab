@@ -31,7 +31,7 @@ a.extend(int(n) for n in input().split(" "))
 
 max, min = [None], [None]
 print("\ni\t j\tMax\tMin");
-MinMax(1, 10, max, min)
+MinMax(1, len(a)-1, max, min)
 
 print("\nFinal Max:", max[0])
 print("Final Min:", min[0])
