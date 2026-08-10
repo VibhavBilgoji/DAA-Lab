@@ -23,13 +23,15 @@ def MinMax(i, j, max, min):
         if min1[0] < min[0]:
             min[0] = min1[0]
 
+    print(i, "\t", j, "\t", max[0], "\t", min[0]);
+
 a = [0]
-n  = int(input("Enter number of elements: "))
-for i in range(n):
-    a.append(int(input()))
+print("Enter elements seperated by spaces: ");
+a.extend(int(n) for n in input().split(" "))
 
 max, min = [None], [None]
+print("\ni\t j\tMax\tMin");
 MinMax(1, 10, max, min)
 
-print("Final Max:", max[0])
+print("\nFinal Max:", max[0])
 print("Final Min:", min[0])
