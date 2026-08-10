@@ -1,6 +1,6 @@
 import math
 
-a = [None, -72, -31, 71, -95, -68, -4, -55, 85, -93, 51]
+# a = [None, -72, -31, 71, -95, -68, -4, -55, 85, -93, 51]
 
 def MinMax(i, j, max, min):
     if i == j:
@@ -23,7 +23,13 @@ def MinMax(i, j, max, min):
         if min1[0] < min[0]:
             min[0] = min1[0]
 
+a = [0]
+n  = int(input("Enter number of elements: "))
+for i in range(n):
+    a.append(int(input()))
+
 max, min = [None], [None]
 MinMax(1, 10, max, min)
-print("Max:", max[0])
-print("Min:", min[0])
+
+print("Final Max:", max[0])
+print("Final Min:", min[0])
