@@ -2,11 +2,11 @@ import random
 import time
 
 
-def measure_quicksort_time(n):
+def measure_time(n):
     random_numbers = [random.randint(-100, 100) for _ in range(n)]
 
     global a
-    a = [None] + random_numbers + [float("inf")]
+    a = [0] + random_numbers + [float("inf")]
 
     start_time = time.perf_counter()
     QuickSort(1, n)
@@ -53,12 +53,12 @@ def QuickSort(p, q):
         QuickSort(j + 1, q)
 
 print("Enter elements seperated by spaces: ");
-a = [None] + [int(n) for n in input().split(" ")] + [float("inf")]
+a = [0] + [int(n) for n in input().split(" ")] + [float("inf")]
 n = len(a) - 2
 
 print("\nOriginal Array:", a[1 : n + 1])
 QuickSort(1, n)
 print("Sorted Array:  ", a[1 : n + 1])
 
-measure_quicksort_time(100)
-measure_quicksort_time(1000)
+measure_time(100)
+measure_time(1000)
