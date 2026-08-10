@@ -6,10 +6,10 @@ def measure_time(n):
     random_numbers = [random.randint(-100, 100) for _ in range(n)]
 
     global a
-    a = [0] + random_numbers + [float("inf")]
+    a = [0] + random_numbers + [float("-inf")]
 
     start_time = time.perf_counter()
-    QuickSort(1, n)
+    QuickSortDsc(1, n)
     end_time = time.perf_counter()
 
     time_in_ms = (end_time - start_time) * 1000
@@ -22,7 +22,7 @@ def Interchange(a, i, j):
     a[j] = temp
 
 
-def Partition(a, m, p):
+def PartitionDsc(a, m, p):
     v = a[m]
     i = m
     j = p
@@ -30,12 +30,12 @@ def Partition(a, m, p):
     while True:
         while True:
             i = i + 1
-            if a[i] >= v:
+            if a[i] <= v:  # Flipped for descending order
                 break
 
         while True:
             j = j - 1
-            if a[j] <= v:
+            if a[j] >= v:  # Flipped for descending order
                 break
 
         if i < j:
@@ -49,19 +49,19 @@ def Partition(a, m, p):
     return j
 
 
-def QuickSort(p, q):
+def QuickSortDsc(p, q):
     if p < q:
-        j = Partition(a, p, q + 1)
-        QuickSort(p, j - 1)
-        QuickSort(j + 1, q)
+        j = PartitionDsc(a, p, q + 1)
+        QuickSortDsc(p, j - 1)
+        QuickSortDsc(j + 1, q)
 
 
-print("Enter elements seperated by spaces: ");
-a = [0] + [int(n) for n in input().split(" ")] + [float("inf")]
+print("Enter elements seperated by spaces: ")
+a = [0] + [int(n) for n in input().split(" ")] + [float("-inf")]
 n = len(a) - 2
 
 print("\nOriginal Array:", a[1 : n + 1])
-QuickSort(1, n)
+QuickSortDsc(1, n)
 print("Sorted Array:  ", a[1 : n + 1])
 
 measure_time(100)

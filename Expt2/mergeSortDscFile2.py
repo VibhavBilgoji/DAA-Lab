@@ -10,31 +10,31 @@ def measure_time(n):
     a = ['\0'] + random_chars
 
     start_time = time.perf_counter()
-    MergeSort(1, n)
+    MergeSortDsc(1, n)
     end_time = time.perf_counter()
 
     time_in_ms = (end_time - start_time) * 1000
     print(f"\nInput Size: {n:<4}\tTime taken: {time_in_ms:<6.4f} ms")
 
 
-def MergeSort(low, high):
-    if(low < high):
+def MergeSortDsc(low, high):
+    if low < high:
         mid = math.floor((low + high) / 2)
-        MergeSort(low, mid)
-        MergeSort(mid + 1, high)
-        Merge(low, mid, high)
+        MergeSortDsc(low, mid)
+        MergeSortDsc(mid + 1, high)
+        MergeDsc(low, mid, high)
 
 
-def Merge(low, mid, high):
+def MergeDsc(low, mid, high):
     h = low
     i = low
     j = mid + 1
 
-    b = ['\0'] * (high+1)
+    b = ['\0'] * (high + 1)
 
     while (h <= mid) and (j <= high):
-        if a[h] <= a[j]:
-            b[i] = a[h];
+        if a[h] >= a[j]:
+            b[i] = a[h]
             h = h + 1
         else:
             b[i] = a[j]
@@ -43,24 +43,24 @@ def Merge(low, mid, high):
         i = i + 1
 
     if h > mid:
-        for k in range(j, high+1):
+        for k in range(j, high + 1):
             b[i] = a[k]
             i = i + 1
     else:
-        for k in range(h, mid+1):
+        for k in range(h, mid + 1):
             b[i] = a[k]
             i = i + 1
 
-    for k in range(low, high+1):
+    for k in range(low, high + 1):
         a[k] = b[k]
 
 
-print("Enter elements seperated by spaces: ");
+print("Enter elements seperated by spaces: ")
 a = ['\0'] + [str(n) for n in input().split(" ")]
 n = len(a) - 1
 
 print("\nOriginal Array:", a[1 : n + 1])
-MergeSort(1, n)
+MergeSortDsc(1, n)
 print("Sorted Array:  ", a[1 : n + 1])
 
 measure_time(100)
