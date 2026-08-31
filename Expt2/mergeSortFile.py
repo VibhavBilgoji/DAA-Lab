@@ -1,3 +1,4 @@
+import math
 import random
 import string
 import time
@@ -6,44 +7,38 @@ import timeit
 a = []
 
 
-def Interchange(a, i, j):
-    temp = a[i]
-    a[i] = a[j]
-    a[j] = temp
+def MergeSort(low, high):
+    if low < high:
+        mid = math.floor((low + high) / 2)
+        MergeSort(low, mid)
+        MergeSort(mid + 1, high)
+        Merge(low, mid, high)
 
 
-def Partition(a, m, p):
-    v = a[m]
-    i = m
-    j = p
-
-    while True:
-        while True:
+def Merge(low, mid, high):
+    global a
+    h = low
+    i = low
+    j = mid + 1
+    b = [None] * (high + 1)
+    while (h <= mid) and (j <= high):
+        if a[h] <= a[j]:
+            b[i] = a[h]
+            h = h + 1
+        else:
+            b[i] = a[j]
+            j = j + 1
+        i = i + 1
+    if h > mid:
+        for k in range(j, high + 1):
+            b[i] = a[k]
             i = i + 1
-            if a[i] <= v:
-                break
-
-        while True:
-            j = j - 1
-            if a[j] >= v:
-                break
-
-        if i < j:
-            Interchange(a, i, j)
-
-        if i >= j:
-            break
-
-    a[m] = a[j]
-    a[j] = v
-    return j
-
-
-def QuickSort(p, q):
-    if p < q:
-        j = Partition(a, p, q + 1)
-        QuickSort(p, j - 1)
-        QuickSort(j + 1, q)
+    else:
+        for k in range(h, mid + 1):
+            b[i] = a[k]
+            i = i + 1
+    for k in range(low, high + 1):
+        a[k] = b[k]
 
 
 def get_data(data_type, size):
@@ -55,22 +50,16 @@ def get_data(data_type, size):
         return [random.choice(string.ascii_letters) for _ in range(size)]
     elif data_type == "String":
         return [
-            "".join(random.choices(string.ascii_letters, k=8))
+            "".join(random.choices(string.ascii_uppercase, k=8))
             for _ in range(size)
         ]
 
 
 def run_sort(data):
     global a
+    a = [None] + list(data)
     n = len(data)
-    if isinstance(data[0], str) and len(data[0]) == 1:
-        sentinel = "\x00"
-    elif isinstance(data[0], str):
-        sentinel = ""
-    else:
-        sentinel = float('-inf')
-    a = [None] + list(data) + [sentinel]
-    QuickSort(1, n)
+    MergeSort(1, n)
 
 
 sizes = [1000, 2500, 5000, 7500, 10000]
@@ -103,5 +92,5 @@ def print_table(title, results):
     print()
 
 
-print_table("Quick Sort Benchmarking using time.perf_counter", perf_times)
-print_table("Quick Sort Benchmarking using timeit", timeit_times)
+print_table("Merge Sort Benchmarking using time.perf_counter", perf_times)
+print_table("Merge Sort Benchmarking using timeit", timeit_times)
