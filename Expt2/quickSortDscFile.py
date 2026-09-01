@@ -103,5 +103,5 @@ def print_table(title, results):
     print()
 
 
-print_table("Quick Sort Benchmarking using time.perf_counter", perf_times)
-print_table("Quick Sort Benchmarking using timeit", timeit_times)
+print_table("Quick Sort Benchmarking using time.perf_counter (time in seconds)", perf_times)
+print_table("Quick Sort Benchmarking using timeit (time in seconds)", timeit_times)

@@ -5,6 +5,7 @@ import time
 import timeit
 
 a = []
+b = []
 
 
 def MergeSort(low, high):
@@ -16,11 +17,10 @@ def MergeSort(low, high):
 
 
 def Merge(low, mid, high):
-    global a
+    global a, b
     h = low
     i = low
     j = mid + 1
-    b = [None] * (high + 1)
     while (h <= mid) and (j <= high):
         if a[h] <= a[j]:
             b[i] = a[h]
@@ -56,8 +56,9 @@ def get_data(data_type, size):
 
 
 def run_sort(data):
-    global a
+    global a, b
     a = [None] + list(data)
+    b = [None] * len(a)
     n = len(data)
     MergeSort(1, n)
 
@@ -92,5 +93,5 @@ def print_table(title, results):
     print()
 
 
-print_table("Merge Sort Benchmarking using time.perf_counter", perf_times)
-print_table("Merge Sort Benchmarking using timeit", timeit_times)
+print_table("Merge Sort Benchmarking using time.perf_counter (time in seconds)", perf_times)
+print_table("Merge Sort Benchmarking using timeit (time in seconds)", timeit_times)
