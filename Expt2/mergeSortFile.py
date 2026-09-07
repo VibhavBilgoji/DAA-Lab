@@ -43,9 +43,9 @@ def Merge(low, mid, high):
 
 def get_data(data_type, size):
     if data_type == "Integer":
-        return [random.randint(1, 100000) for _ in range(size)]
+        return [random.randint(1000, 9999) for _ in range(size)]
     elif data_type == "Float":
-        return [random.uniform(1.0, 100000.0) for _ in range(size)]
+        return [round(random.uniform(1.0, 100000.0), 4) for _ in range(size)]
     elif data_type == "Character":
         return [random.choice(string.ascii_letters) for _ in range(size)]
     elif data_type == "String":

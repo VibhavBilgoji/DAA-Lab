@@ -1,4 +1,5 @@
 def greedyKnapsack(m, n):
+    i = 0
     for i in range(1, n + 1):
         x[i] = 0.0
 
@@ -11,6 +12,8 @@ def greedyKnapsack(m, n):
         x[i] = 1.0
         u = u - w[i]
 
+    i += 1
+
     if i <= n:
         x[i] = u / w[i]
 
@@ -20,8 +23,8 @@ def main():
 
     n = int(input("Enter n: "))
 
-    p = [0.0] + list(map(float, input("Enter profits: ").split()))
-    w = [0.0] + list(map(float, input("Enter weights: ").split()))
+    p = [0.0] + [float(i) for i in input("Enter profits: ").split()]
+    w = [0.0] + [float(i) for i in input("Enter weights: ").split()]
 
     m = float(input("Enter knapsack capacity: "))
 
