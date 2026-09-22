@@ -50,7 +50,6 @@ def prim(cost_matrix: list[list[int]]):
     print_state(1, 1)
 
     for i in range(1, n - 1):
-
         j = -1
         min_val = float('inf')
         for v in range(n):
@@ -75,25 +74,31 @@ def prim(cost_matrix: list[list[int]]):
 
     return t, mincost
 
+
 if __name__ == "__main__":
     INF = float('inf')
+
+    # Transcribed directly from the handwritten 10x10 matrix
     graph = [
-        [INF, 14 , 60, 10, 71, 50, 44, INF, 47, INF],
-        [14, INF, 78, 43, 41, 18, 28, 56, 72, 60],
-        [60, 78, INF, 55, 88, 72, 39, 95, 77, 51],
-        [10, 43, 55, INF, 12, 17, INF, 11, INF, 42],
-        [71, 41, 88, 12, INF, 81, 61, 22, 54, 92],
-        [50, 18, 72, 17, 81, INF, INF, 44, 54, 58],
-        [44, 28, 39, INF, 61, INF, INF, 27, 88, 97],
-        [INF, 56, 95, 11, 22, 44, 27, INF, 30, 31],
-        [47, 72, 77, INF, 54, 54, 88, 30, INF, 21],
-        [INF, 60, 51, 42, 92, 58, 97, 31, 21, INF]
+        [INF, 61,  89,  67,  23,  68,  INF, 69,  INF, 96],
+        [61,  INF, 91,  84,  37,  86,  73,  32,  13,  23],
+        [89,  91,  INF, 57,  48,  96,  65,  98,  41,  INF],
+        [67,  84,  57,  INF, 42,  80,  29,  24,  14,  73],
+        [23,  37,  48,  42,  INF, 28,  24,  35,  86,  55],
+        [68,  86,  96,  80,  28,  INF, 92,  97,  81,  14],
+        [INF, 73,  65,  29,  24,  92,  INF, INF, 41,  99],
+        [69,  32,  98,  24,  35,  97,  INF, INF, 93,  37],
+        [INF, 13,  41,  14,  86,  81,  41,  93,  INF, INF],
+        [96,  23,  INF, 73,  55,  14,  99,  37,  INF, INF]
     ]
 
     mst_edges, total_cost = prim(graph)
 
-    print("=== FINAL MST RESULT ===")
-    print("Edges in the MST (1-indexed):")
-    for edge in mst_edges:
-        print(f"({edge[0] + 1}, {edge[1] + 1})")
-    print(f"Total Minimum Cost: {total_cost}")
+    if mst_edges == "Graph is empty or disconnected":
+        print(mst_edges)
+    else:
+        print("=== FINAL MST RESULT ===")
+        print("Edges in the MST (1-indexed):")
+        for edge in mst_edges:
+            print(f"({edge[0] + 1}, {edge[1] + 1})")
+        print(f"Total Minimum Cost: {total_cost}")
