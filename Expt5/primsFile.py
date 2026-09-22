@@ -78,7 +78,6 @@ def prim(cost_matrix: list[list[int]]):
 if __name__ == "__main__":
     INF = float('inf')
 
-    # Transcribed directly from the handwritten 10x10 matrix
     graph = [
         [INF, 61,  89,  67,  23,  68,  INF, 69,  INF, 96],
         [61,  INF, 91,  84,  37,  86,  73,  32,  13,  23],
