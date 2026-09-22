@@ -37,17 +37,11 @@ def main():
     # m = float(input("Enter knapsack capacity: "))
     m = Fraction(768)
 
-    # elements as (profit, weight), kept in their original index order 1..n
     elements = list(zip(profits[:n], weights[:n]))
 
-    # tag every element with its original 1-based index so we can always
-    # map results back to the original (unmodified) input order
-    indexed_elements = list(enumerate(elements, start=1))  # (idx, (p, w))
+    indexed_elements = list(enumerate(elements, start=1))
     original_weight = {idx: w for idx, (p, w) in indexed_elements}
 
-    # case 1: element number j (from 1) has both its profit and weight
-    # divided by i = j + 1, i.e. the ratio 1 / i starts from i = 2.
-    # The original order is kept.
     scaled_indexed = [
         (idx, (p / (idx + 1), w / (idx + 1))) for idx, (p, w) in indexed_elements
     ]
@@ -65,10 +59,6 @@ def main():
     print("\nelements :", [(f"{float(p):g}", f"{float(w):g}") for p, w in elements], "(profit, weight)")
     print("capacity :", f"{float(m):g}\n")
 
-    # for each case, run the greedy fill and, per element (in ORIGINAL
-    # index order), work out what fraction of its ORIGINAL weight actually
-    # ended up in the sack: 1 if fully taken, a fraction if it's the one
-    # element that got cut off when capacity ran out, 0 if never reached
     rows = []
     for label, case_items in cases:
         items_for_algo = [(idx, p, w) for idx, (p, w) in case_items]
