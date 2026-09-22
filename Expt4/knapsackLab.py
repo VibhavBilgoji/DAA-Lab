@@ -30,10 +30,10 @@ def main():
     scaled = [(p / (j + 1), w / (j + 1)) for j, (p, w) in enumerate(elements, start=1)]
 
     cases = [
-        ("ratio 1 / i", scaled),
-        ("decreasing profits", sorted(elements, key=lambda e: e[0], reverse=True)),
-        ("increasing weights", sorted(elements, key=lambda e: e[1])),
-        ("decreasing profit/weight", sorted(elements, key=lambda e: e[0] / e[1], reverse=True)),
+        ("1 / i Ratio", scaled),
+        ("Maximum Profits", sorted(elements, key=lambda e: e[0], reverse=True)),
+        ("Minimum Weights", sorted(elements, key=lambda e: e[1])),
+        ("Maximum profit/weight", sorted(elements, key=lambda e: e[0] / e[1], reverse=True)),
     ]
 
     print("\nelements :", [(f"{p:g}", f"{w:g}") for p, w in elements], "(profit, weight)")
