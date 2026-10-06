@@ -26,16 +26,14 @@ def format_ratio(r):
 
 
 def main():
-    # n = int(input("Enter n: "))
-    n = 11
+    n = int(input("Enter n: "))
 
-    # profits = [float(i) for i in input("Enter profits: ").split()]
-    profits = [Fraction(x) for x in [387, 281, 357, 456, 570, 768, 408, 26, 254, 62, 464]]
-    # weights = [float(i) for i in input("Enter weights: ").split()]
-    weights = [Fraction(x) for x in [23, 84, 69, 47, 95, 85, 61, 96, 75, 51, 94]]
+    profits = [Fraction(i) for i in input("Enter profits: ").split()]
+    # profits = [Fraction(x) for x in [387, 281, 357, 456, 570, 768, 408, 26, 254, 62, 464]]
+    weights = [Fraction(i) for i in input("Enter weights: ").split()]
+    # weights = [Fraction(x) for x in [23, 84, 69, 47, 95, 85, 61, 96, 75, 51, 94]]
 
-    # m = float(input("Enter knapsack capacity: "))
-    m = Fraction(768)
+    m = float(input("Enter knapsack capacity: "))
 
     elements = list(zip(profits[:n], weights[:n]))
 

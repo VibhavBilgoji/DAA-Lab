@@ -4,6 +4,7 @@ import time
 import timeit
 
 a = []
+show = False
 
 
 def Interchange(a, i, j):
@@ -36,6 +37,8 @@ def Partition(a, m, p):
 
     a[m] = a[j]
     a[j] = v
+    if show:
+        print(f"Partition(pivot={v}, position={j}):", a[1:-1])
     return j
 
 
@@ -71,6 +74,22 @@ def run_sort(data):
         sentinel = float('-inf')
     a = [None] + list(data) + [sentinel]
     QuickSort(1, n)
+
+
+tokens = input("Enter values separated by spaces: ").split()
+try:
+    user_data = [int(t) for t in tokens]
+except ValueError:
+    try:
+        user_data = [float(t) for t in tokens]
+    except ValueError:
+        user_data = tokens
+
+print("Input:", user_data)
+show = True
+run_sort(user_data)
+show = False
+print("Sorted:", a[1:-1], "\n")
 
 
 sizes = [1000, 2500, 5000, 7500, 10000]

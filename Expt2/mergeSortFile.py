@@ -6,6 +6,7 @@ import timeit
 
 a = []
 b = []
+show = False
 
 
 def MergeSort(low, high):
@@ -39,6 +40,8 @@ def Merge(low, mid, high):
             i = i + 1
     for k in range(low, high + 1):
         a[k] = b[k]
+    if show:
+        print(f"Merge({low}, {mid}, {high}):", a[1:])
 
 
 def get_data(data_type, size):
@@ -62,6 +65,21 @@ def run_sort(data):
     n = len(data)
     MergeSort(1, n)
 
+
+tokens = input("Enter values separated by spaces: ").split()
+try:
+    user_data = [int(t) for t in tokens]
+except ValueError:
+    try:
+        user_data = [float(t) for t in tokens]
+    except ValueError:
+        user_data = tokens
+
+print("Input:", user_data)
+show = True
+run_sort(user_data)
+show = False
+print("Sorted:", a[1:], "\n")
 
 sizes = [1000, 2500, 5000, 7500, 10000]
 datatypes = ["Integer", "Float", "Character", "String"]

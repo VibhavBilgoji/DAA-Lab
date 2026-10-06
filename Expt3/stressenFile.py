@@ -1,6 +1,8 @@
 import random
 import time
 
+show = False
+
 
 def add(A:list[list[int]], B:list[list[int]]):
     n = len(A)
@@ -67,11 +69,29 @@ def strassenMult(A:list[list[int]], B:list[list[int]]):
     C21 = add(Q, S)
     C22 = add(sub(add(P, R), Q), U)
 
+    if show:
+        print(f"  Strassen ({n}x{n}): P={P} Q={Q} R={R} S={S} T={T} U={U} V={V}")
+        print(f"  Strassen ({n}x{n}): C11={C11} C12={C12} C21={C21} C22={C22}")
     return mergeMatrix(C11, C12, C21, C22)
 
 def generateRandomMatrix(n):
     return [[random.randint(1, 1000) for _ in range(n)] for _ in range(n)]
 
+def readMatrix(name, n):
+    print(f"Enter matrix {name} ({n}x{n}), one row per line, values separated by spaces:")
+    return [list(map(int, input().split())) for _ in range(n)]
+
+
+# ---- user input with step-by-step output (2x2, then 4x4) ----
+for n in (2, 4):
+    A = readMatrix("A", n)
+    B = readMatrix("B", n)
+    show = True
+    print(f"\nStrassen, {n}x{n}:")
+    print("Result:", strassenMult(A, B), "\n")
+    show = False
+
+# ---- benchmarking ----
 sizes = [32, 64, 128, 256, 512]
 
 print("_________________________________________________________________")
