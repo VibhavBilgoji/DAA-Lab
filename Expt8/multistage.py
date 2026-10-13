@@ -1,47 +1,22 @@
-"""
-Multistage graphs (Section 5.2): FGraph (forward approach, Algorithm 5.1)
-and BGraph (backward approach, Algorithm 5.2).
-
-All arrays are 1-indexed: index 0 holds None and is never used.
-
-Input format
-------------
-k                      number of stages
-s_1 s_2 ... s_k        number of vertices in each stage (s_1 = s_k = 1)
-e                      number of edges
-i j c                  (e lines) edge <i,j> with cost c
-
-Vertices are numbered 1..n in order of stages (stage 1 first, then stage 2,
-...). So with stage sizes 1 4 3 3 1, stage V2 = {2,3,4,5}, V3 = {6,7,8}, ...
-"""
-
 INF = float('inf')
 
 
-# ---------------------------------------------------------------- Algorithm 5.1
 def FGraph(G, k, n, p):
-    # The input is a k-stage graph G = (V, E) with n vertices
-    # indexed in order of stages. G[j] is the adjacency list of j, holding
-    # (r, c[j, r]) pairs. p[1 : k] is a minimum-cost path.
     cost = [None] * (n + 1)
     d = [None] * (n + 1)
 
     cost[n] = 0.0
     for j in range(n - 1, 0, -1):
-        # Compute cost[j].
-        # Let r be a vertex such that <j, r> is an edge
-        # of G and c[j, r] + cost[r] is minimum;
         r = None
         best = INF
         for (v, c) in G[j]:
             if c + cost[v] < best:
                 best = c + cost[v]
                 r = v
-        cost[j] = best          # c[j, r] + cost[r]  (INF if j cannot reach t)
+        cost[j] = best
         d[j] = r
 
-    # Find a minimum-cost path.
-    if cost[1] < INF:           # guard: only trace if a path exists
+    if cost[1] < INF:
         p[1] = 1
         p[k] = n
         for j in range(2, k):
@@ -49,29 +24,22 @@ def FGraph(G, k, n, p):
     return cost, d
 
 
-# ---------------------------------------------------------------- Algorithm 5.2
 def BGraph(G, k, n, p):
-    # Same function as FGraph, but G here is the INVERSE adjacency list:
-    # G[j] holds (r, c[r, j]) pairs for every edge <r, j>.
     bcost = [None] * (n + 1)
     d = [None] * (n + 1)
 
     bcost[1] = 0.0
     for j in range(2, n + 1):
-        # Compute bcost[j].
-        # Let r be such that <r, j> is an edge of
-        # G and bcost[r] + c[r, j] is minimum;
         r = None
         best = INF
         for (v, c) in G[j]:
             if bcost[v] + c < best:
                 best = bcost[v] + c
                 r = v
-        bcost[j] = best         # bcost[r] + c[r, j]  (INF if s cannot reach j)
+        bcost[j] = best
         d[j] = r
 
-    # Find a minimum-cost path.
-    if bcost[n] < INF:          # guard: only trace if a path exists
+    if bcost[n] < INF:
         p[1] = 1
         p[k] = n
         for j in range(k - 1, 1, -1):
@@ -79,41 +47,49 @@ def BGraph(G, k, n, p):
     return bcost, d
 
 
-# ------------------------------------------------------------------- helpers
 def read_graph():
-    k = int(input("Number of stages k: "))
-    sizes = list(map(int, input(f"Vertices in each stage ({k} numbers): ").split()))
-    if len(sizes) != k or k < 2 or sizes[0] != 1 or sizes[-1] != 1:
-        raise ValueError("Need k >= 2 stage sizes with |V1| = |Vk| = 1")
-    n = sum(sizes)
+    k = 5
+    sizes = [1, 4, 4, 4, 1]
+    n = sum(sizes)                      # 14
 
-    stage = [None] * (n + 1)        # stage[v] = i such that v is in V_i
+    stage = [None] * (n + 1)
     v = 1
     for i, sz in enumerate(sizes, start=1):
         for _ in range(sz):
             stage[v] = i
             v += 1
 
-    e = int(input("Number of edges: "))
-    G = [None] + [[] for _ in range(n)]     # adjacency lists
-    R = [None] + [[] for _ in range(n)]     # inverse adjacency lists
-    print("Enter each edge as: i j cost")
-    for _ in range(e):
-        i, j, c = input().split()
-        i, j, c = int(i), int(j), float(c)
-        if not (1 <= i <= n and 1 <= j <= n) or stage[j] != stage[i] + 1:
-            raise ValueError(f"Edge <{i},{j}> must go from stage i to stage i+1")
-        G[i].append((j, c))
-        R[j].append((i, c))
-    return k, n, stage, G, R
+    # (from, to, cost)
+    edges = [
+        # stage 1 -> 1 vertex
+        (1, 2, 3), (1, 3, 9), (1, 4, 10), (1, 5, 11),
+        # stage 2 -> 4 vertices
+        (2, 6, 5), (2, 8, 15), (2, 9, 2),
+        (3, 7, 3), (3, 8, 10), (3, 9, 6),
+        (4, 6, 11), (4, 8, 5),
+        (5, 6, 2), (5, 7, 14), (5, 8, 1), (5, 9, 3),
+        # stage 3 -> 4 vertices
+        (6, 10, 5), (6, 11, 8), (6, 12, 7), (6, 13, 2),
+        (7, 10, 15), (7, 11, 3), (7, 12, 14), (7, 13, 9),
+        (8, 10, 3), (8, 11, 6), (8, 13, 14),
+        (9, 10, 6), (9, 11, 4), (9, 12, 6), (9, 13, 15),
+        # stage 4 -> 4 vertices
+        (10, 14, 13), (11, 14, 15), (12, 14, 15), (13, 14, 1),
+    ]
 
+    G = [None] + [[] for _ in range(n)]
+    R = [None] + [[] for _ in range(n)]
+    for i, j, c in edges:
+        assert stage[j] == stage[i] + 1, f"Edge <{i},{j}> must go from stage i to i+1"
+        G[i].append((j, float(c)))
+        R[j].append((i, float(c)))
+    return k, n, stage, G, R
 
 def fmt(x):
     return str(int(x)) if float(x).is_integer() else str(x)
 
 
 def all_paths(G, n):
-    """Every s-to-t path with its cost (simple DFS, for display only)."""
     out = []
 
     def dfs(u, path, total):
@@ -132,10 +108,9 @@ def all_paths(G, n):
 def main():
     k, n, stage, G, R = read_graph()
 
-    # ---- forward approach
     p = [None] * (k + 1)
     cost, d = FGraph(G, k, n, p)
-    print("\n================ FORWARD APPROACH (FGraph) ================")
+    print("\nFORWARD APPROACH")
     for i in range(1, k + 1):
         print(f"\n-- Stage V{i} --")
         for j in range(1, n + 1):
@@ -155,10 +130,9 @@ def main():
     else:
         print(f"\nMinimum-cost s-t path: p[1:{k}] = {p[1:k + 1]}, cost = {fmt(cost[1])}")
 
-    # ---- backward approach
     p = [None] * (k + 1)
     bcost, d = BGraph(R, k, n, p)
-    print("\n================ BACKWARD APPROACH (BGraph) ================")
+    print("\nBACKWARD APPROACH")
     for i in range(1, k + 1):
         print(f"\n-- Stage V{i} --")
         for j in range(1, n + 1):
@@ -178,8 +152,7 @@ def main():
     else:
         print(f"\nMinimum-cost s-t path: p[1:{k}] = {p[1:k + 1]}, cost = {fmt(bcost[n])}")
 
-    # ---- every s-t path
-    print("\n================ ALL s-t PATHS ================")
+    print("\nALL s-t PATHS")
     paths = all_paths(G, n)
     best = min((c for _, c in paths), default=None)
     for path, c in sorted(paths, key=lambda x: x[1]):
