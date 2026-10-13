@@ -1,40 +1,60 @@
-Step  1 | Edge ( 4,  7) w= 2 -> ACCEPTED         | Running Cost:   2
-        parent: [ -1  -1  -1  -1  -1  -1   4  -1]
+Step  1 | Edge ( 2,  9) w=13 -> ACCEPTED         | Running Cost:  13
+        parent: [ -1  -1  -1  -1  -1  -1  -1  -1   2  -1]
 
-Step  2 | Edge ( 4,  6) w= 4 -> ACCEPTED         | Running Cost:   6
-        parent: [ -1  -1  -1  -1  -1   4   4  -1]
+Step  2 | Edge ( 4,  9) w=14 -> ACCEPTED         | Running Cost:  27
+        parent: [ -1   4  -1  -1  -1  -1  -1  -1   2  -1]
 
-Step  3 | Edge ( 1,  2) w= 5 -> ACCEPTED         | Running Cost:  11
-        parent: [ -1   1  -1  -1  -1   4   4  -1]
+Step  3 | Edge ( 6, 10) w=14 -> ACCEPTED         | Running Cost:  41
+        parent: [ -1   4  -1  -1  -1  -1  -1  -1   2   6]
 
-Step  4 | Edge ( 1,  3) w= 6 -> ACCEPTED         | Running Cost:  17
-        parent: [ -1   1   1  -1  -1   4   4  -1]
+Step  4 | Edge ( 1,  5) w=23 -> ACCEPTED         | Running Cost:  64
+        parent: [ -1   4  -1  -1   1  -1  -1  -1   2   6]
 
-Step  5 | Edge ( 7,  8) w= 6 -> ACCEPTED         | Running Cost:  23
-        parent: [ -1   1   1  -1  -1   4   4   4]
+Step  5 | Edge ( 2, 10) w=23 -> ACCEPTED         | Running Cost:  87
+        parent: [ -1   4  -1  -1   1   4  -1  -1   2   6]
 
-Step  6 | Edge ( 6,  8) w= 7 -> REJECTED (Cycle) | Running Cost:  23
-        parent: [ -1   1   1  -1  -1   4   4   4]
+Step  6 | Edge ( 4,  8) w=24 -> ACCEPTED         | Running Cost: 111
+        parent: [ -1   4  -1  -1   1   4  -1   4   2   6]
 
-Step  7 | Edge ( 2,  4) w= 8 -> ACCEPTED         | Running Cost:  31
-        parent: [ -1   1   1   1  -1   4   4   4]
+Step  7 | Edge ( 5,  7) w=24 -> ACCEPTED         | Running Cost: 135
+        parent: [ -1   4  -1  -1   1   4   1   4   2   6]
 
-Step  8 | Edge ( 3,  5) w= 9 -> ACCEPTED         | Running Cost:  40
-        parent: [ -1   1   1   1   1   4   4   4]
+Step  8 | Edge ( 5,  6) w=28 -> ACCEPTED         | Running Cost: 163
+        parent: [ -1   4  -1   1   1   4   1   4   2   6]
+
+Step  9 | Edge ( 4,  7) w=29 -> REJECTED (Cycle) | Running Cost: 163
+        parent: [ -1   4  -1   1   1   4   1   4   2   6]
+
+Step 10 | Edge ( 2,  8) w=32 -> REJECTED (Cycle) | Running Cost: 163
+        parent: [ -1   4  -1   1   1   4   1   4   2   6]
+
+Step 11 | Edge ( 5,  8) w=35 -> REJECTED (Cycle) | Running Cost: 163
+        parent: [ -1   4  -1   1   1   4   1   4   2   6]
+
+Step 12 | Edge ( 2,  5) w=37 -> REJECTED (Cycle) | Running Cost: 163
+        parent: [ -1   4  -1   1   1   4   1   4   2   6]
+
+Step 13 | Edge ( 8, 10) w=37 -> REJECTED (Cycle) | Running Cost: 163
+        parent: [ -1   4  -1   1   1   4   1   4   2   6]
+
+Step 14 | Edge ( 3,  9) w=41 -> ACCEPTED         | Running Cost: 204
+        parent: [  3   4  -1   1   1   4   1   4   2   6]
 
 
-Final Minimum Cost = 40
+Final Minimum Cost = 204
 
 ------------------------------
-   Final MST Edges (t)
+   Final MST Edges (t)     
 ------------------------------
 Row (i) |  t[i, 1]|  t[i, 2]
 ------------------------------
-   1    |    4    |    7
-   2    |    4    |    6
-   3    |    1    |    2
-   4    |    1    |    3
-   5    |    7    |    8
-   6    |    2    |    4
-   7    |    3    |    5
+   1    |    2    |    9   
+   2    |    4    |    9   
+   3    |    6    |    10  
+   4    |    1    |    5   
+   5    |    2    |    10  
+   6    |    4    |    8   
+   7    |    5    |    7   
+   8    |    5    |    6   
+   9    |    3    |    9   
 ------------------------------
