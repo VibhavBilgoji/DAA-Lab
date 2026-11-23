@@ -17,9 +17,9 @@ Node 15 (x5=0): c = -110, u = -106 [live]
 Node 16 (x6=1): Infeasible (w=20 > 16)
 Node 17 (x6=0): c = -106, u = -106 [optimal]
 Node 18 (x3=1): c = -109.125, u = -106 [live]
-Node 19 (x3=0): c = -106, u = -86 [live]
+Node 19 (x3=0): c = -106, u = -86 [bound]
 Node 20 (x4=1): Infeasible (w=19 > 16)
-Node 21 (x4=0): c = -106, u = -106 [live]
+Node 21 (x4=0): c = -106, u = -106 [bound]
 Node 22 (x6=1): Infeasible (w=19 > 16)
 Node 23 (x6=0): c = -101, u = -101 [killed]
 
