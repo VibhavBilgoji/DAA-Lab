@@ -81,11 +81,6 @@ def print_code_table(root, freq):
     n_chars = sum(freq.values())
     print(f"{'Total':<8}{n_chars:>6}{'':>16}{'':>6}{total_bits:>10}")
     print("=" * 52)
-    print(f"Distinct characters (d)  : {len(freq)}")
-    print(f"Fixed 8-bit ASCII        : {8 * n_chars} bits")
-    print(f"Huffman encoded          : {total_bits} bits")
-    print(f"Average code length      : {total_bits / n_chars:.2f} bits/char")
-    print(f"Space saved vs ASCII     : {100 * (1 - total_bits / (8 * n_chars)):.1f}%")
 
 
 def layout(node, depth, counter):
