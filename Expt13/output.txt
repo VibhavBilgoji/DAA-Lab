@@ -1,0 +1,28 @@
+Node Calculations:
+Node 1 (root): c = -117.875, u = -101 [live]
+Node 2 (x1=1): c = -117.875, u = -101 [live]
+Node 3 (x1=0): c = -99.375, u = -85 [killed]
+Node 4 (x2=1): c = -117.875, u = -101 [live]
+Node 5 (x2=0): c = -109.125, u = -106 [live]
+Node 6 (x3=1): c = -117.875, u = -101 [live]
+Node 7 (x3=0): c = -116, u = -106 [live]
+Node 8 (x4=1): Infeasible (w=21 > 16)
+Node 9 (x4=0): c = -116, u = -101 [live]
+Node 10 (x4=1): c = -116, u = -106 [live]
+Node 11 (x4=0): c = -96, u = -86 [killed]
+Node 12 (x5=1): Infeasible (w=18 > 16)
+Node 13 (x5=0): c = -107, u = -101 [live]
+Node 14 (x5=1): Infeasible (w=19 > 16)
+Node 15 (x5=0): c = -110, u = -106 [live]
+Node 16 (x6=1): Infeasible (w=20 > 16)
+Node 17 (x6=0): c = -106, u = -106 [optimal]
+Node 18 (x3=1): c = -109.125, u = -106 [live]
+Node 19 (x3=0): c = -106, u = -86 [live]
+Node 20 (x4=1): Infeasible (w=19 > 16)
+Node 21 (x4=0): c = -106, u = -106 [live]
+Node 22 (x6=1): Infeasible (w=19 > 16)
+Node 23 (x6=0): c = -101, u = -101 [killed]
+
+Optimal Maximum Profit: 106
+X vector: [1, 1, 0, 1, 0, 0]
+Path: 1 -> 2 -> 4 -> 7 -> 10 -> 15 -> 17
