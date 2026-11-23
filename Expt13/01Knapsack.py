@@ -84,6 +84,11 @@ def lc_branch_and_bound():
             else:
                 heapq.heappush(heap, (child.c_hat, child.id))
 
+    # live nodes that were never expanded are bounded out by the answer
+    for node in nodes.values():
+        if node.status == "live" and not node.children:
+            node.status = "bound"
+
     return nodes, answer
 
 
@@ -131,8 +136,7 @@ def layout(node, depth):
 
 layout(nodes[1], 0)
 
-colors = {"live": "#cfc7f5", "killed": "#d9d9d9", "infeasible": "#d9d9d9", "optimal": "#7fd6a8"}
-on_path = set(path)
+tags = {"killed": "killed", "bound": "bound", "infeasible": "inf"}
 
 fig, ax = plt.subplots(figsize=(16, 10))
 
@@ -141,31 +145,33 @@ for node in nodes.values():
         continue
     x, y = positions[node.id]
     px, py = positions[node.parent]
-    hot = node.id in on_path
-    ax.plot([px, x], [py, y], color="green" if hot else "black",
-            lw=2.5 if hot else 1.2, zorder=1)
-    ax.text((px + x) / 2, (py + y) / 2, node.edge, fontsize=8, color="blue",
+    ax.plot([px, x], [py, y], color="black", lw=1.2, zorder=1)
+    ax.text((px + x) / 2, (py + y) / 2, node.edge, fontsize=8, color="black",
             ha="center", va="center",
             bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.85))
 
 for node in nodes.values():
     x, y = positions[node.id]
-    ax.add_patch(plt.Circle((x, y), 0.32, fc=colors[node.status], ec="black", lw=1.5, zorder=2))
+    ax.add_patch(plt.Circle((x, y), 0.32, fc="white", ec="black", lw=1.5, zorder=2))
     ax.text(x, y, str(node.id), fontsize=10, fontweight="bold", ha="center", va="center", zorder=3)
     if node.status == "infeasible":
-        ax.text(x, y - 0.5, "w=%d > %d" % (node.cw, m), fontsize=8, color="gray",
+        ax.text(x, y - 0.5, "w=%d > %d" % (node.cw, m), fontsize=8, color="black",
+                ha="center", va="top")
+        ax.text(x, y - 0.8, tags[node.status], fontsize=9, fontweight="bold",
                 ha="center", va="top")
     else:
-        ax.text(x, y - 0.45, r"$\hat{c}=$" + fmt(node.c_hat, 1), fontsize=8, color="darkred",
+        ax.text(x, y - 0.45, r"$\hat{c}=$" + fmt(node.c_hat, 1), fontsize=8, color="black",
                 ha="center", va="top")
-        ax.text(x, y - 0.75, r"$u=$" + fmt(node.u, 1), fontsize=8, color="darkgreen",
+        ax.text(x, y - 0.75, r"$u=$" + fmt(node.u, 1), fontsize=8, color="black",
                 ha="center", va="top")
+        if node.status in tags:
+            ax.text(x, y - 1.05, tags[node.status], fontsize=9, fontweight="bold",
+                    ha="center", va="top")
+
 
 ax.set_aspect("equal")
 ax.axis("off")
 ax.autoscale_view()
-plt.title("LC Branch-and-Bound State Space Tree (0/1 Knapsack)\n"
-          "purple = expanded/live, gray = killed or infeasible, green = optimal leaf",
-          fontsize=13)
+plt.title("LC Branch-and-Bound State Space Tree (0/1 Knapsack)", fontsize=13)
 plt.tight_layout()
 plt.show()
