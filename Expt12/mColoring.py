@@ -49,7 +49,7 @@ def add_node(label, status, parent=None):
     return nid
 
 def lbl(k, c):
-    return COLORS[c]
+    return f"x{k}={c}"
 
 def NextValue(k):
     while True:
@@ -108,40 +108,26 @@ def layout(node, depth):
     return xx
 layout(root, 0)
 
-from matplotlib.patches import Patch
-
-colors = {"open": "#a6cee3", "bounded": "#f1948a", "solution": "#82e0aa"}
-node_colors = [colors[info[v]["status"]] for v in T.nodes]
-node_sizes = [1300 if v == root else 420 for v in T.nodes]
-labels = {v: info[v]["label"] for v in T.nodes}
+labels = {v: str(v + 1) for v in T.nodes}
+edge_labels = {(p, c): info[c]["label"] for p, c in T.edges}
+node_sizes = [600 if v == root else 600 for v in T.nodes]
 
 n_leaves = _leaf[0]
-fig, ax = plt.subplots(figsize=(max(14, 0.42 * n_leaves + 3), 8))
-nx.draw_networkx_edges(T, pos, ax=ax, arrows=True, arrowsize=8,
-                       edge_color="#888888", width=1, node_size=node_sizes)
-nx.draw_networkx_nodes(T, pos, ax=ax, node_color=node_colors,
-                       node_size=node_sizes, edgecolors="#444444", linewidths=0.8)
-nx.draw_networkx_labels(T, pos, labels=labels, ax=ax, font_size=8, font_weight="bold")
+fig, ax = plt.subplots(figsize=(max(14, 0.3 * n_leaves + 3), 8))
+nx.draw_networkx_edges(T, pos, ax=ax, arrows=False, edge_color="black", width=1)
+nx.draw_networkx_nodes(T, pos, ax=ax, node_color="white", node_size=node_sizes,
+                       edgecolors="black", linewidths=1)
+nx.draw_networkx_labels(T, pos, labels=labels, ax=ax, font_size=8, font_color="black")
+nx.draw_networkx_edge_labels(T, pos, edge_labels=edge_labels, ax=ax, font_size=6,
+                             font_color="black", label_pos=0.5, rotate=False,
+                             bbox=dict(boxstyle="square,pad=0", fc="none", ec="none"))
 
-x_left = min(p[0] for p in pos.values()) - 1.8
-ax.text(x_left, 0, "Root", ha="right", va="center", fontsize=10, color="#555555")
-for k in range(1, n + 1):
-    ax.text(x_left, -k, f"x[{k}]", ha="right", va="center", fontsize=10, color="#555555")
-    ax.axhline(-k, color="#dddddd", lw=0.6, zorder=0)
+for v in T.nodes:
+    if info[v]["status"] == "bounded":
+        ax.text(pos[v][0], pos[v][1] - 0.25, "B", ha="center", va="center",
+                fontsize=9, color="black")
 
-counts = {s: sum(1 for v in info.values() if v["status"] == s) for s in colors}
-legend = [Patch(facecolor=colors["open"], edgecolor="#444444", label="feasible (partial)"),
-          Patch(facecolor=colors["solution"], edgecolor="#444444",
-                label=f"solution ({counts['solution']})")]
-if counts["bounded"]:
-    legend.append(Patch(facecolor=colors["bounded"], edgecolor="#444444",
-                        label=f"bounded / rejected ({counts['bounded']})"))
-ax.legend(handles=legend, loc="upper right", fontsize=10)
-
-key = " ".join(f"{COLORS[c]}={c}" for c in COLORS)
-ax.set_title(f"m-Coloring State-Space Tree (n={n}, m={m}, {key})   "
-             f"total nodes={T.number_of_nodes()}", fontsize=13)
-ax.set_xlim(x_left - 1.2, max(p[0] for p in pos.values()) + 0.8)
+ax.set_title(f"m-Coloring State Space Tree (m = {m})", fontsize=12, color="black")
 ax.axis("off")
 plt.tight_layout()
 plt.show()
