@@ -1,48 +1,155 @@
-# Problem instance settngs
-n = 6
-m = 30
-w = [5, 10, 12, 13, 15, 18]
+import matplotlib.pyplot as plt
 
-# x array to keep track of the subset (1 if included, 0 if excluded)
-x = [0] * n
+n = 5
+m = 276
+w = [0, 23, 69, 115, 161, 184]
+x = [0] * (n + 2)
 
-def SumOfSub(s, k, r):
-    """
-    Algorithm 7.6: Recursive backtracking algorithm for sum of subsets problem.
-    s: current sum of included elements
-    k: current index being considered
-    r: sum of remaining elements
-    """
-    # Step visualization
-    print(f"Evaluating Node: s={s}, k={k}, r={r}")
+total_sum = sum(w[1:n+1])
+w.append(float('inf'))
 
-    # Generate left child (Include w[k])
-    x[k] = 1
-    print(f" -> Try including w[{k}]={w[k]} => subset path: {x[:k+1]}")
+tree = {}
+counter = [0]
+solutions = []
 
-    # Check if a valid subset is found
-    if s + w[k] == m:
-        # Output matches the formats (1, 1, 0, 0, 1), etc.
-        print(f"\n*** SUBSET FOUND: {tuple(x[:k+1])} ***\n")
-        # No recursive call here as w[j] > 0 for all j
+def SumOfSub(s, k, r, chosen=(), parent=None, decision=""):
 
-    # Check if we can still include the next element without exceeding m
-    elif k + 1 < n and s + w[k] + w[k+1] <= m:
-        SumOfSub(s + w[k], k + 1, r - w[k])
+    counter[0] += 1
+    node = counter[0]
 
-    # Generate right child and evaluate Bk (Exclude w[k])
-    # Bounding condition:
-    # 1. (s + r - w[k] >= m): Remaining sum is enough to reach target m
-    # 2. (s + w[k+1] <= m): Adding the NEXT element doesn't exceed target m
-    if k + 1 < n and (s + r - w[k] >= m) and (s + w[k+1] <= m):
+    tree[node] = {
+        "state": (s, k, r),
+        "children": [],
+        "solution": False
+    }
+
+    if parent is not None:
+        tree[parent]["children"].append((node, decision))
+
+    if s == m:
+        tree[node]["solution"] = True
+        solutions.append(chosen)
+        print("Subset found:", chosen)
+        return node
+
+    if k <= n and s + w[k] == m:
+        x[k] = 1
+        SumOfSub(
+            s + w[k], k + 1, r - w[k],
+            chosen + (w[k],), node, 1
+        )
+        return node
+
+    if k < n and s + w[k] + w[k+1] <= m:
+        x[k] = 1
+        SumOfSub(
+            s + w[k], k + 1, r - w[k],
+            chosen + (w[k],), node, 1
+        )
+
+    if (k < n and
+        s + r - w[k] >= m and
+        s + w[k+1] <= m):
+
         x[k] = 0
-        print(f" -> Try excluding w[{k}]={w[k]} => subset path: {x[:k+1]}")
-        SumOfSub(s, k + 1, r - w[k])
+        SumOfSub(
+            s, k + 1, r - w[k],
+            chosen, node, 0
+        )
 
-# Execution
-print(f"Target sum (m) = {m}")
-print(f"Weights (w) = {w}")
-print(f"Initial sum of all elements = {sum(w)}\n")
+    return node
 
-# Start at the root: current sum = 0, index = 0, remaining sum = sum(w)
-SumOfSub(0, 0, sum(w))
+
+root = SumOfSub(0, 1, total_sum)
+
+positions = {}
+leaf_counter = [0]
+
+def set_positions(node, depth=0):
+
+    children = tree[node]["children"]
+
+    if not children:
+        xpos = leaf_counter[0]
+        leaf_counter[0] += 1
+    else:
+        child_positions = []
+
+        for child, decision in children:
+            child_x = set_positions(child, depth + 1)
+            child_positions.append(child_x)
+
+        xpos = sum(child_positions) / len(child_positions)
+
+    positions[node] = (xpos, -depth * 1.1)
+    return xpos
+
+
+set_positions(root)
+
+fig, ax = plt.subplots(figsize=(13, 7))
+
+for node, data in tree.items():
+
+    px, py = positions[node]
+    k = data["state"][1]
+
+    for child, decision in data["children"]:
+
+        cx, cy = positions[child]
+
+        ax.plot(
+            [px, cx],
+            [py - 0.18, cy + 0.18],
+            color="black",
+            linewidth=0.8
+        )
+
+        label = rf"$x_{{{k}}}={decision}$"
+        offset = -0.2 if decision == 1 else 0.2
+
+        ax.text(
+            (px + cx) / 2 + offset,
+            (py + cy) / 2,
+            label,
+            fontsize=8,
+            ha="center"
+        )
+
+for node, data in tree.items():
+
+    xpos, ypos = positions[node]
+    s, k, r = data["state"]
+
+    color = "lightgreen" if data["solution"] else "white"
+
+    ax.text(
+        xpos, ypos,
+        f"{s}, {k}, {r}",
+        ha="center",
+        va="center",
+        fontsize=8,
+        bbox=dict(
+            boxstyle="square,pad=0.3",
+            facecolor=color,
+            edgecolor="black",
+            linewidth=0.8
+        )
+    )
+
+    if not data["children"] and not data["solution"]:
+        tag = "bound" if s + r < m else "killed"
+        ax.text(
+            xpos, ypos - 0.22,
+            tag,
+            ha="center",
+            va="top",
+            fontsize=7,
+            color="red"
+        )
+
+ax.set_title("State Space Tree - Sum of Subsets", fontsize=12)
+ax.axis("off")
+plt.tight_layout()
+plt.show()
+
