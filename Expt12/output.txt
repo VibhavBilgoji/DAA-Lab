@@ -1,0 +1,22 @@
+Chromatic number found: m = 3
+Starting m-Coloring (Vertices: 5, Colors: 3)
+Solution 1: [1, 2, 3, 1, 2]
+Solution 2: [1, 2, 3, 3, 1]
+Solution 3: [1, 2, 3, 3, 2]
+Solution 4: [1, 3, 2, 1, 3]
+Solution 5: [1, 3, 2, 2, 1]
+Solution 6: [1, 3, 2, 2, 3]
+Solution 7: [2, 1, 3, 2, 1]
+Solution 8: [2, 1, 3, 3, 1]
+Solution 9: [2, 1, 3, 3, 2]
+Solution 10: [2, 3, 1, 1, 2]
+Solution 11: [2, 3, 1, 1, 3]
+Solution 12: [2, 3, 1, 2, 3]
+Solution 13: [3, 1, 2, 2, 1]
+Solution 14: [3, 1, 2, 2, 3]
+Solution 15: [3, 1, 2, 3, 1]
+Solution 16: [3, 2, 1, 1, 2]
+Solution 17: [3, 2, 1, 1, 3]
+Solution 18: [3, 2, 1, 3, 2]
+
+Total valid colorings: 18
